@@ -1,6 +1,7 @@
 {
-  "name": "my-react-app",
+  "name": "currency_converter",
   "version": "0.1.0",
+  "homepage": "https://zinchenko-anastasiia.github.io/currency_converter",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.13.3",
