@@ -38,7 +38,7 @@ Content.propTypes = {
       date: PropTypes.number,
       rateSell: PropTypes.number.isRequired,
       rateBuy: PropTypes.number,
-      rateCross: PropTypes.number.isRequired,
+      rateCross: PropTypes.number,
     })
   ).isRequired,
 };

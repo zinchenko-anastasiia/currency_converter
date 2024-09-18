@@ -12,7 +12,7 @@ const useCurrencySelectorList = () => {
       { id: 2, text: 'USD', value: `${USD}` },
       { id: 3, text: 'EUR', value: `${EUR}` },
     ],
-    [UKR, USD, EUR]
+    []
   );
 };
 

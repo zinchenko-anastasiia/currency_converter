@@ -1,9 +1,8 @@
 import { useCallback, useMemo, useState } from 'react';
 import appConst from '../../../constants/appConst';
 import cleanInputValue from '../utils/cleanInputValue';
-import findCurrency from '../../../utils/findCurrency';
-import convertToLocalCurrency from '../utils/convertToLocalCurrency';
-import convertToForeignCurrency from '../utils/convertToForeignCurrency';
+import handleCurrencySelectChange from '../utils/handleCurrencySelectChange';
+import handleCurrencyInputChange from '../utils/handleCurrencyInputChange';
 
 const USD = appConst.USD;
 const UKR = appConst.UKR;
@@ -18,85 +17,47 @@ const useFormConfig = (data, selectorMenuList) => {
   const handleAmountSelectChange = useCallback(
     (e) => {
       const newAmountCurrency = e.target.value;
-      setAmount(newAmountCurrency);
-
-      if (newAmountCurrency === convertedAmount) {
-        const currency = findCurrency(data, newAmountCurrency, amount);
-
-        const updateAmountInput =
-          +newAmountCurrency === UKR || +newAmountCurrency === USD
-            ? convertToLocalCurrency(amountInputValue, currency.rateSell)
-            : convertToForeignCurrency(amountInputValue, currency.rateSell);
-        setConvertedAmountInputValue(updateAmountInput);
-        setConvertedAmount(amount);
-      } else {
-        const currency = findCurrency(data, newAmountCurrency, amount);
-
-        const updateAmountInput =
-          +newAmountCurrency === UKR
-            ? convertToLocalCurrency(amountInputValue, currency.rateSell)
-            : convertToForeignCurrency(amountInputValue, currency.rateSell);
-        setConvertedAmountInputValue(updateAmountInput);
-      }
+      handleCurrencySelectChange(
+        newAmountCurrency,
+        setAmount,
+        convertedAmount,
+        amountInputValue,
+        amount,
+        data,
+        setConvertedAmountInputValue,
+        setConvertedAmount
+      );
     },
-    [amount, convertedAmount]
+    [amount, amountInputValue, convertedAmount, data]
   );
 
   const handleConvertedAmountSelectChange = useCallback(
     (e) => {
       const newConvertedCurrency = e.target.value;
-      setConvertedAmount(newConvertedCurrency);
-
-      if (newConvertedCurrency === amount) {
-        const currency = findCurrency(
-          data,
-          newConvertedCurrency,
-          convertedAmount
-        );
-
-        const updateAmountInput =
-          +newConvertedCurrency === UKR || +newConvertedCurrency === USD
-            ? convertToLocalCurrency(
-              convertedAmountInputValue,
-              currency.rateSell
-            )
-            : convertToForeignCurrency(
-              convertedAmountInputValue,
-              currency.rateSell
-            );
-        setAmountInputValue(updateAmountInput);
-        setAmount(convertedAmount);
-      } else {
-        const currency = findCurrency(
-          data,
-          newConvertedCurrency,
-          convertedAmount
-        );
-
-        const updateAmountInput =
-          +newConvertedCurrency === UKR
-            ? convertToLocalCurrency(
-              convertedAmountInputValue,
-              currency.rateSell
-            )
-            : convertToForeignCurrency(
-              convertedAmountInputValue,
-              currency.rateSell
-            );
-        setAmountInputValue(updateAmountInput);
-      }
+      handleCurrencySelectChange(
+        newConvertedCurrency,
+        setConvertedAmount,
+        amount,
+        convertedAmountInputValue,
+        convertedAmount,
+        data,
+        setAmountInputValue,
+        setAmount
+      );
     },
-    [amount, convertedAmount]
+    [amount, convertedAmount, convertedAmountInputValue, data]
   );
 
   const handleAmountInputChange = useCallback(
     (e) => {
       const cleanValue = cleanInputValue(e.target.value);
-      setAmountInputValue(cleanValue);
-
-      const currency = findCurrency(data, convertedAmount, amount);
-      setConvertedAmountInputValue(
-        convertToLocalCurrency(cleanValue, currency?.rateSell)
+      handleCurrencyInputChange(
+        cleanValue,
+        setAmountInputValue,
+        data,
+        convertedAmount,
+        amount,
+        setConvertedAmountInputValue
       );
     },
     [data, convertedAmount, amount]
@@ -105,11 +66,13 @@ const useFormConfig = (data, selectorMenuList) => {
   const handleConvertedAmountInputChange = useCallback(
     (e) => {
       const cleanValue = cleanInputValue(e.target.value);
-      setConvertedAmountInputValue(cleanValue);
-
-      const currency = findCurrency(data, amount, convertedAmount);
-      setAmountInputValue(
-        convertToForeignCurrency(cleanValue, currency.rateSell)
+      handleCurrencyInputChange(
+        cleanValue,
+        setConvertedAmountInputValue,
+        data,
+        amount,
+        convertedAmount,
+        setAmountInputValue
       );
     },
     [data, convertedAmount, amount]
@@ -138,11 +101,13 @@ const useFormConfig = (data, selectorMenuList) => {
     ],
     [
       amount,
-      convertedAmount,
+      handleAmountSelectChange,
       selectorMenuList,
       amountInputValue,
-      convertedAmountInputValue,
       handleAmountInputChange,
+      convertedAmount,
+      handleConvertedAmountSelectChange,
+      convertedAmountInputValue,
       handleConvertedAmountInputChange,
     ]
   );

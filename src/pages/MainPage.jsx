@@ -2,9 +2,10 @@ import { Box, CircularProgress, Container, CssBaseline } from '@mui/material';
 import Content from '../components/Content';
 import Header from '../components/Header';
 import useFetchCurrencyData from './hooks/useFetchCurrencyData';
+import ErrorMessage from '../components/ErrorMessage';
 
 const MainPage = () => {
-  const [isLoading, data] = useFetchCurrencyData();
+  const [isLoading, data, isError] = useFetchCurrencyData();
 
   return (
     <>
@@ -21,6 +22,8 @@ const MainPage = () => {
           >
             <CircularProgress />
           </Box>
+        ) : isError ? (
+          <ErrorMessage />
         ) : (
           <>
             <Header currencyData={data} />

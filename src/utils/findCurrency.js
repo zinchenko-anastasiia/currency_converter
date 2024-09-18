@@ -4,8 +4,6 @@ const findCurrency = (currencyData, codeA, codeB) => {
       currencyCodeA === +codeA && currencyCodeB === +codeB
   );
 
-  console.log(rate);
-
   if (!rate) {
     rate = currencyData?.find(
       ({ currencyCodeA, currencyCodeB }) =>

@@ -16,34 +16,32 @@ const CurrencyEntryForm = ({
   selectMenuList,
   inputValue,
   inputOnChange,
-}) => {
-  return (
-    <Stack direction="column" spacing={1}>
-      <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-        {title}
-      </Typography>
-      <Stack direction="row" spacing={1}>
-        <Box sx={{ width: 120 }}>
-          <FormControl fullWidth>
-            <Select value={selectValue} onChange={selectOnChange}>
-              {selectMenuList?.map(({ id, text, value }) => (
-                <MenuItem value={value} key={id}>
-                  {text}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Box>
-        <TextField
-          label="Введість суму"
-          variant="outlined"
-          value={inputValue}
-          onChange={inputOnChange}
-        />
-      </Stack>
+}) => (
+  <Stack direction="column" spacing={1}>
+    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+      {title}
+    </Typography>
+    <Stack direction="row" spacing={1}>
+      <Box sx={{ width: 120 }}>
+        <FormControl fullWidth>
+          <Select value={selectValue} onChange={selectOnChange}>
+            {selectMenuList?.map(({ id, text, value }) => (
+              <MenuItem value={value} key={id}>
+                {text}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
+      <TextField
+        label="Введість суму"
+        variant="outlined"
+        value={inputValue}
+        onChange={inputOnChange}
+      />
     </Stack>
-  );
-};
+  </Stack>
+);
 
 CurrencyEntryForm.propTypes = {
   title: PropTypes.string.isRequired,

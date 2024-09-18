@@ -14,13 +14,9 @@ function request(url, method = 'GET', data = null) {
     };
   }
 
-  return wait(300)
+  return wait(1000)
     .then(() => fetch(url))
     .then((response) => {
-      if (!response.ok) {
-        throw new Error();
-      }
-
       return response.json();
     });
 }

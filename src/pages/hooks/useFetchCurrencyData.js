@@ -14,13 +14,15 @@ function calculateCrossRate(rateAtoCommon, rateCommonToB) {
 const useFetchCurrencyData = () => {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     const fetchTranslations = async () => {
       try {
         const result = await api.main.getExchangeRatesFromPrivatBank();
-
-        if (result?.length > 0) {
+        if (result.errCode) {
+          setIsError(true);
+        } else if (result?.length > 0) {
           setData(
             result?.filter(
               (item) => item.currencyCodeA === USD || item.currencyCodeA === EUR
@@ -28,7 +30,7 @@ const useFetchCurrencyData = () => {
           );
         }
       } catch (error) {
-        console.error('Error fetching exchange rates:', error);
+        console.error('Error fetching currency rates from MonoBank:', error);
       } finally {
         setIsLoading(false);
       }
@@ -50,14 +52,14 @@ const useFetchCurrencyData = () => {
   );
 
   data?.push({
-    currencyCodeA: 840,
-    currencyCodeB: 978,
+    currencyCodeA: USD,
+    currencyCodeB: EUR,
     date: Date.now() / 1000,
     rateBuy: rateUSDtoEURBuy,
     rateSell: rateUSDtoEURSell,
   });
 
-  return [isLoading, data];
+  return [isLoading, data, isError];
 };
 
 export default useFetchCurrencyData;
