@@ -1,4 +1,5 @@
 # Currency Converter
+[DEMO LINK]( https://zinchenko-anastasiia.github.io/currency_converter/)
 
 This project is a currency converter implemented in React, which allows users to select two currencies.
 
